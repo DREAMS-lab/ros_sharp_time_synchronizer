@@ -18,7 +18,7 @@ void imageCallback(const sensor_msgs::CompressedImageConstPtr& msg)
     ros::Time time = ros::Time::now();
     cv_ptr->encoding = "bgr8";
     cv_ptr->header.stamp = time;
-    cv_ptr->header.frame_id = "/traj_output";
+    cv_ptr->header.frame_id = "udrone_up";
     cv_ptr->image = image;
     image_pub.publish(cv_ptr->toImageMsg());      
     cam_info_msg.header.stamp = time;
@@ -46,8 +46,6 @@ int main(int argc, char **argv)
   cam_info_msg.D = boost::assign::list_of(0.0)(0.0)(0.0)(0.0)(0.0).convert_to_container<std::vector<double> >(); 
   cam_info_msg.R = boost::array<double, 9>{{ 1, 0, 0, 0, 1, 0, 0, 0, 1 }};
   cam_info_msg.P = boost::array<double, 12>{{585.7560709479847, 0.0, 320.5, -0.0, 0.0, 585.7560709479847, 240.5, 0.0, 0.0, 0.0, 1.0, 0.0}};
-
-
   ros::Subscriber sub = nh.subscribe("/udrone/camera/up/rgb/compressed", 1, imageCallback);
 
   while(ros::ok()){
